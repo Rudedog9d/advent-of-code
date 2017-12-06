@@ -40,7 +40,6 @@ class blah():
         self.matrix_size = 0
         self.n = 1
         self.x = self.y = 0
-        self.new_value = False
 
     def add_up(self):
         pass
@@ -121,14 +120,8 @@ class blah():
                 Bottom Row
                 '''
                 if self.x == self.matrix_size:
-                    # Bottom right corner
-                    if self.new_value:
-                        self.new_value = False
-                        self.move_up()
-                    else:
-                        self.new_value = True
-                        self.add_rows()
-                        self.move_right()
+                    self.add_rows()
+                    self.move_right()
                 else:
                     # Bottom row
                     self.move_right()
