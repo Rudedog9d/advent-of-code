@@ -30,28 +30,16 @@ print('Part 1:', horiz_jumps + vert_jumps)
 Part 2
 '''
 class blah():
-    def __init__(self):
-        self.data = 806
+    def __init__(self, verbose=False):
+        self.verbose = verbose
+        self.matrix_size = 0
+        # Start with some data already defined, to lazy to code start case
+        self.x = self.y = 2
         self.matrix = [
             [5,   4,   2],
             [10,  1,   1],
             [11,  23,  25]
         ]
-        self.matrix_size = 0
-        self.n = 1
-        self.x = self.y = 0
-
-    def add_up(self):
-        pass
-
-    def add_down(self):
-        pass
-
-    def add_left(self):
-        pass
-
-    def add_right(self):
-        pass
 
     def add_rows(self):
         # Increase indexes to match
@@ -71,40 +59,61 @@ class blah():
         print('=' * 10)
         for row in self.matrix:
             for v in row:
-                print('{}\t'.format(v), end='')
+                print('{}'.format(v).center(8), end='\t')
             print()
         print('=' * 10)
 
     def generate_new_val(self):
-        pass
+        # create locals for easy reading
+        x = self.x
+        y = self.y
+        ret = 0
+
+        # Verticals
+        if y > 0:
+            ret += self.matrix[y - 1][x]
+        if y < self.matrix_size:
+            ret += self.matrix[y + 1][x]
+
+        # Horizontals
+        if x > 0:
+            ret += self.matrix[y][x - 1]
+        if x < self.matrix_size:
+            ret += self.matrix[y][x + 1]
+
+        # Diagonals
+        if x > 0:
+            if y > 0:
+                ret += self.matrix[y - 1][x - 1]  # top left diag
+            if y < self.matrix_size:
+                ret += self.matrix[y + 1][x - 1]  # bottom left diag
+
+        if x < self.matrix_size:
+            if y > 0:
+                ret += self.matrix[y - 1][x + 1]
+            if y < self.matrix_size:
+                ret += self.matrix[y + 1][x + 1]
+
+        return ret
 
     def move_up(self,):
         self.y -= 1
-        # val = self.matrix[self.y][self.x]
-        # self.matrix[self.y][self.x]
-        # print('{}x{}={}'.format(self.y, self.x, self.matrix[self.y][self.x]))
 
     def move_down(self,):
         self.y += 1
-        # print('{}x{}={}'.format(self.y, self.x, self.matrix[self.y][self.x]))
 
     def move_right(self,):
         self.x += 1
-        # val = self.generate_new_val()
-        # self.matrix[self.y].append(val)
-        # print('{}x{}={}'.format(self.y, self.x, self.matrix[self.y][self.x]))
 
     def move_left(self,):
         self.x -= 1
-        # val = self.generate_new_val()
-        # self.matrix[self.y][self.x] = val
-        # print('{}x{}={}'.format(self.y, self.x, self.matrix[self.y][self.x]))
 
-    def run(self):
-        while self.n < data:
+    def run(self, target):
+        while self.matrix[self.y][self.x] < target:
             self.matrix_size = len(self.matrix) - 1
-            print('{}x{}={}'.format(self.y, self.x, self.matrix[self.y][self.x]))
-            self.print_matrix()
+            if self.verbose:
+                print('{}x{}={}'.format(self.y, self.x, self.matrix[self.y][self.x]))
+                self.print_matrix()
             if self.x == 0:
                 '''
                 Left Column
@@ -148,8 +157,15 @@ class blah():
             else:
                 raise Exception("Not sure what to do with {}x{}".format(self.x, self.y))
 
+            # Set new value
+            self.matrix[self.y][self.x] = self.generate_new_val()
 
-blah().run()
+        # Return winning value!
+        return self.matrix[self.y][self.x]
+
+ret = blah().run(data)
+# ret = blah(verbose=True).run(data)
+print('Part 2:', ret)
 
 
 
