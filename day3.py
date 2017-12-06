@@ -56,12 +56,12 @@ class blah():
             row.append(0)
 
     def print_matrix(self):
-        print('=' * 10)
+        print('=' * 102)
         for row in self.matrix:
             for v in row:
-                print('{}'.format(v).center(8), end='\t')
+                print('{}'.format(v).ljust(8), end='\t')
             print()
-        print('=' * 10)
+        print('=' * 102)
 
     def generate_new_val(self):
         # create locals for easy reading
@@ -166,37 +166,3 @@ class blah():
 ret = blah().run(data)
 # ret = blah(verbose=True).run(data)
 print('Part 2:', ret)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
