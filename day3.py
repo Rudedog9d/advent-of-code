@@ -40,27 +40,72 @@ class blah():
         self.matrix_size = 0
         self.n = 1
         self.x = self.y = 0
+        self.new_value = False
+
+    def add_up(self):
+        pass
+
+    def add_down(self):
+        pass
+
+    def add_left(self):
+        pass
+
+    def add_right(self):
+        pass
+
+    def add_rows(self):
+        # Increase indexes to match
+        self.x += 1
+        self.y += 1
+        # Add empty row to top
+        self.matrix.insert(0, [0 for _ in range(0, self.matrix_size + 1)])
+        # Add empty row to bottom
+        self.matrix.append([0 for _ in range(0, self.matrix_size + 1)])
+        for row in self.matrix:
+            # Add column to beginning of all rows
+            row.insert(0, 0)
+            # Add column to end of all rows
+            row.append(0)
+
+    def print_matrix(self):
+        print('=' * 10)
+        for row in self.matrix:
+            for v in row:
+                print('{}\t'.format(v), end='')
+            print()
+        print('=' * 10)
+
+    def generate_new_val(self):
+        pass
 
     def move_up(self,):
         self.y -= 1
-        print(self.matrix[self.y][self.x])
+        # val = self.matrix[self.y][self.x]
+        # self.matrix[self.y][self.x]
+        # print('{}x{}={}'.format(self.y, self.x, self.matrix[self.y][self.x]))
 
     def move_down(self,):
         self.y += 1
-        print(self.matrix[self.y][self.x])
+        # print('{}x{}={}'.format(self.y, self.x, self.matrix[self.y][self.x]))
 
     def move_right(self,):
         self.x += 1
-        print(self.matrix[self.y][self.x])
+        # val = self.generate_new_val()
+        # self.matrix[self.y].append(val)
+        # print('{}x{}={}'.format(self.y, self.x, self.matrix[self.y][self.x]))
 
     def move_left(self,):
         self.x -= 1
-        print(self.matrix[self.y][self.x])
+        # val = self.generate_new_val()
+        # self.matrix[self.y][self.x] = val
+        # print('{}x{}={}'.format(self.y, self.x, self.matrix[self.y][self.x]))
 
     def run(self):
-        print(self.matrix[self.y][self.x])
         while self.n < data:
             self.matrix_size = len(self.matrix) - 1
+            print('{}x{}={}'.format(self.y, self.x, self.matrix[self.y][self.x]))
+            self.print_matrix()
             if self.x == 0:
                 '''
                 Left Column
@@ -77,7 +122,13 @@ class blah():
                 '''
                 if self.x == self.matrix_size:
                     # Bottom right corner
-                    self.move_up()
+                    if self.new_value:
+                        self.new_value = False
+                        self.move_up()
+                    else:
+                        self.new_value = True
+                        self.add_rows()
+                        self.move_right()
                 else:
                     # Bottom row
                     self.move_right()
