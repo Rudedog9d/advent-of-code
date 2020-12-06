@@ -28,6 +28,7 @@ func Part2(input []string) string {
 		firstPerson := len(group) == 0
 		person := make(map[int32]bool)
 
+		// End of group, round up the answers
 		if line == "" {
 			for _, q := range group {
 				if q {
