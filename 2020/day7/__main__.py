@@ -39,9 +39,7 @@ rules = {
 def add_rule(name, match: re.Match):
     if not rules.get(name):
         rules[name] = {}
-    sub_rule_name = match.string[match.regs[2][0]:match.regs[2][1]]
-    sub_rule_value = int(match.string[match.regs[1][0]:match.regs[1][1]])
-    rules[name][sub_rule_name] = sub_rule_value
+    rules[name][match.group(2)] = int(match.group(1))
 
 
 def build_rules():
@@ -49,13 +47,22 @@ def build_rules():
     for line in data:
         parts = line.split()
         rule_name = f"{parts[0]} {parts[1]}"
+        # find first rule, if it exists (will not match 'contains no other bags')
         rule = bag_re.search(line)
         while rule:
+            # Add the rule, if we found a match (from before the loop or inside)
             add_rule(rule_name, rule)
-            rule = bag_re.search(line, rule.regs[-1][1])
+            # Find the next rule, using the end of our current match as the starting position
+            rule = bag_re.search(line, pos=rule.end())
 
 
 def find_bag(rule, bag):
+    """
+    Search `rule` and check if it contains `bag`
+    :param rule: Rule to search (a bag name)
+    :param bag: Bag to search for (a bag name)
+    :return bool: True if `bag` was found within `rule`
+    """
     for sub_rule in rules.get(rule, []):
         if sub_rule == bag:
             return True
@@ -65,9 +72,14 @@ def find_bag(rule, bag):
 
 
 def count_bags(rule):
+    """
+    Count number of nested bags within `rule`
+    """
     count = 0
     for sub_rule in rules.get(rule, []):
+        # Get number of sub-bags in this rule
         num = rules[rule].get(sub_rule)
+        # return number of sub_rule bags + (all bags with EACH sub_rule)
         count += num + (num * count_bags(sub_rule))
     return count
 
