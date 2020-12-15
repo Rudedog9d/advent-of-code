@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"time"
 )
 
 func CheckError(e error) {
@@ -41,11 +42,14 @@ func main() {
 	input := readData(path.Join(basedir, "2020", day, "input.txt"))
 	activeDay := activeYear[day] // todo handle when day isn't found
 
+	start1 := time.Now()
 	if activeDay.Part1 != nil {
-		fmt.Println(day, "Part 1:", activeDay.Part1.(func([]string) string)(input))
+		fmt.Println(day, "Part 1:", activeDay.Part1.(func([]string) string)(input), "(", time.Since(start1), "seconds )")
 	}
 
 	if activeDay.Part2 != nil {
-		fmt.Println(day, "Part 2:", activeDay.Part2.(func([]string) string)(input))
+		start2 := time.Now()
+		fmt.Println(day, "Part 2:", activeDay.Part2.(func([]string) string)(input), "(", time.Since(start2), "seconds )")
 	}
+	fmt.Println("Total Execution:", time.Since(start1), "seconds")
 }
