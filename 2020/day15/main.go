@@ -21,7 +21,6 @@ func do_stuff(input []string, target int) string {
 	//var turns = parse_data([]string{"2,1,3"}) // test data
 	lastTurn := make(map[int]int)
 
-	println(turns[0], turns[1], turns[2])
 	for i := 0; i < len(turns)-1; i++ {
 		num := turns[i]
 		//println("starting num", num)
