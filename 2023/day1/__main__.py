@@ -1,20 +1,31 @@
 import re
+# from collections.abc import dict_keys
 from pathlib import Path
+from typing import List, Iterable
 
 data = [
-    "1abc2",
-    "pqr3stu8vwx",
-    "a1b2c3d4e5f",
-    "treb7uchet",
+    "two1nine",
+    "eightwothree",
+    "abcone2threexyz",
+    "xtwone3four",
+    "4nineeightseven2",
+    "zoneight234",
+    "7pqrstsixteen",
 ]
-data = [line.strip() for line in open(Path(Path(__file__).parent, 'input.txt'))]
+# data = [line.strip() for line in open(Path(Path(__file__).parent, 'input.txt'))]
+
+
+
+def reverse_string(string: str) -> str:
+    return string[::-1]
 
 
 def part1():
     sum = 0
+    return sum
     for line in data:
-        first = re.match('.*(\d+).*', line[::-1]).group(1)[::-1]
-        last = re.match('.*(\d+).*', line).group(1)
+        first = re.match('[^\d]*(\d)', line).group(1)
+        last = re.match('[^\d]*(\d)', reverse_string(line)).group(1)
         sum += int(first + last)
     return sum
 
@@ -31,15 +42,33 @@ numbers = {
     'nine': 9,
 }
 
+def get_pattern(keys: Iterable[str]):
+    str_digits = "|".join(keys)
+    return f'[^\d|{str_digits}]*(\d|{str_digits})'
+
+
 def part2():
     sum = 0
+    print(get_pattern(numbers.keys()))
+    print(get_pattern([reverse_string(x) for x in numbers.keys()]))
     for line in data:
-        first = re.match(f'.*(\d+|{"|".join([k[::-1] for k in numbers.keys()])}).*', line[::-1]).group(1)[::-1]
-        last = re.match(f'.*(\d+|{"|".join(numbers.keys())}).*', line).group(1)
+        try:
+            first = re.match(get_pattern(numbers.keys()), line).group(1)
+            rev_pattern = get_pattern([reverse_string(x) for x in numbers.keys()])
+            print(rev_pattern, reverse_string(line))
+            m = re.match(rev_pattern, reverse_string(line))
+            last = m.group(1)
+            last = reverse_string(last)
+        except:
+            print('no match', line)
+            raise
+
         if first in numbers:
             first = numbers[first]
         if last in numbers:
             last = numbers[last]
+
+        print(first, last)
         sum += int(f'{first}{last}')
     return sum
 

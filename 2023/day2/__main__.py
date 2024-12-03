@@ -8,17 +8,30 @@ data = [
     "Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red",
     "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"
 ]
-data = [line.strip() for line in open(Path(Path(__file__).parent, 'input.txt'))]
+# data = [line.strip() for line in open(Path(Path(__file__).parent, 'input.txt'))]
 
+d = {
+    # game N: [
+    #   {
+    #       'red': 1,
+    #       'green': 2,
+    #       'blue': 3
+    #   }
+    # ]
+}
 
 def parse_game(lines: List[str]) -> Dict[str, List[Dict[Literal['green', 'blue', 'red'], int]]]:
     ret = {}
     for line in lines:
+        # get "Game 5", "{round}"
         game, line = line.split(':')
         ret[game] = []
+        # Get each round
         for rnd in line.strip().split(';'):
             rnd_result = {}
+            # Get each color and cound
             for entry in rnd.split(','):
+                # split count and color apart
                 count, color = entry.strip().split(' ')
                 rnd_result[color] = count
             ret[game].append(rnd_result)
@@ -29,6 +42,8 @@ def parse_game(lines: List[str]) -> Dict[str, List[Dict[Literal['green', 'blue',
 def part1():
     sum = 0
     games = parse_game(data)
+    # name="Game 1"
+    # game=[{'red': 1}, {'green': 1}]
     for name, game in games.items():
         valid = True
         for rnd in game:
