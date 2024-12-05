@@ -17,13 +17,6 @@ data = [
 data = [line.strip() for line in open(Path(Path(__file__).parent, 'input.txt'))]
 
 
-class Word(BaseModel):
-    word: str
-    # starting position for the word
-    start: tuple[int, int]
-    end: tuple[int, int]
-
-
 def extend_offset(n: int) -> int:
     """Extend the offset by 1, determining direction by int sign"""
     if n < 0:
@@ -34,6 +27,7 @@ def extend_offset(n: int) -> int:
 
 
 def print_dir(directions: list[tuple[int, int] | bool]):
+    """Debug print the direction array in a more human friendlyu form"""
     print(directions[0:3], directions[3:6], directions[6:9], sep='\n')
 
 x_dir = {-1: 'left', 0: '', 1: 'right'}
